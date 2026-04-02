@@ -54,11 +54,12 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       }
       return {
         ...state,
-        items: state.items.map(item =>
-          item.id === action.payload.id
-            ? { ...item, quantity: action.payload.quantity, totalPrice: action.payload.quantity * item.menuItem.price }
-            : item
-        ),
+        items: state.items.map(item => {
+          if (item.id !== action.payload.id) return item;
+          // Derive the per-unit price from the current totalPrice (includes toppings)
+          const unitPrice = item.totalPrice / item.quantity;
+          return { ...item, quantity: action.payload.quantity, totalPrice: action.payload.quantity * unitPrice };
+        }),
       };
     }
     case 'TOGGLE_CART':

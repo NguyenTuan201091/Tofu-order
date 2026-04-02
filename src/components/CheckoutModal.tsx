@@ -12,6 +12,8 @@ interface CheckoutModalProps {
 
 type Step = 'table' | 'review' | 'confirm';
 
+const CONFIRMATION_DISPLAY_DURATION = 3000;
+
 export default function CheckoutModal({ onClose, totalPrice }: CheckoutModalProps) {
   const { state, dispatch } = useCart();
   const [step, setStep] = useState<Step>('table');
@@ -36,7 +38,7 @@ export default function CheckoutModal({ onClose, totalPrice }: CheckoutModalProp
     setTimeout(() => {
       dispatch({ type: 'CLOSE_CART' });
       onClose();
-    }, 3000);
+    }, CONFIRMATION_DISPLAY_DURATION);
   }
 
   return (
